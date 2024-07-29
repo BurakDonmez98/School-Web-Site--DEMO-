@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+
+
+   <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Ogretmen Ekle</title>
+    <link rel="icon" type="image/x-icon" href="/static/assets/favicon.ico" />
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i" rel="stylesheet" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="/css/styles.css" rel="stylesheet" />
+</head>
+
+
+<body>
+<header>
+        <h1 class="site-heading text-center text-faded d-none d-lg-block">
+            <span class="site-heading-upper text-primary mb-3">Öğrenci Sistemi</span>
+            <span class="site-heading-lower">Öğrenci Denetim Sistemi</span>
+        </h1>
+    </header>
+  <section class="page-section cta">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-9 mx-auto">
+                    <div class="cta-inner bg-faded text-center rounded">
+        <h2>Yeni Öğretmen Ekle</h2>
+        <form th:action="@{/ogretmen/ogretmenekle}" th:object="${ogretmen}" method="post" class="needs-validation" novalidate>
+            <div class="form-group mb-3" th:classappend="${#fields.hasErrors('ad')} ? 'has-error' : ''">
+                <label for="ad">Ad</label>
+                <input type="text" id="ad" name="ad" class="form-control" th:field="*{ad}" required>
+                <div th:if="${#fields.hasErrors('ad')}" th:errors="*{ad}" class="text-danger"></div>
+            </div>
+
+            <div class="form-group mb-3" th:classappend="${#fields.hasErrors('soyad')} ? 'has-error' : ''">
+                <label for="soyad">Soyad</label>
+                <input type="text" id="soyad" name="soyad" class="form-control" th:field="*{soyad}" required>
+                <div th:if="${#fields.hasErrors('soyad')}" th:errors="*{soyad}" class="text-danger"></div>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="brans">Branş</label>
+                <input type="text" id="brans" name="brans" class="form-control" th:field="*{brans}">
+            </div>
+
+            <div class="form-group mb-3" th:classappend="${#fields.hasErrors('tcKimlikNo')} ? 'has-error' : ''">
+                <label for="tcKimlikNo">TC Kimlik No</label>
+                <input type="text" id="tcKimlikNo" name="tcKimlikNo" class="form-control" th:field="*{tcKimlikNo}" required>
+                <div th:if="${#fields.hasErrors('tcKimlikNo')}" th:errors="*{tcKimlikNo}" class="text-danger"></div>
+            </div>
+
+            <div class="form-group mb-3" th:classappend="${#fields.hasErrors('telNo')} ? 'has-error' : ''">
+                <label for="telNo">Tel No</label>
+                <input type="text" id="telNo" name="telNo" class="form-control" th:field="*{telNo}" required>
+                <div th:if="${#fields.hasErrors('telNo')}" th:errors="*{telNo}" class="text-danger"></div>
+            </div>
+
+            <div class="form-group mb-3" th:classappend="${#fields.hasErrors('dogumTarihi')} ? 'has-error' : ''">
+                <label for="dogumTarihi">Doğum Tarihi</label>
+                <input type="date" id="dogumTarihi" name="dogumTarihi" class="form-control" th:field="*{dogumTarihi}" required>
+                <div th:if="${#fields.hasErrors('dogumTarihi')}" th:errors="*{dogumTarihi}" class="text-danger"></div>
+            </div>
+          <div class="form-group mb-3" th:classappend="${#fields.hasErrors('ogretmenNotu') ? 'has-error' : ''}">
+    <label for="ogretmenNotu">Öğretmen Notu</label>
+    <input type="number" id="ogretmenNotu" name="ogretmenNotu" class="form-control" th:field="*{ogretmenNotu}" required>
+    <div th:if="${#fields.hasErrors('ogretmenNotu')}" th:errors="*{ogretmenNotu}" class="text-danger"></div>
+</div>
+            <button type="submit" class="btn btn-success">Ekle</button>
+            
+        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<footer class="footer text-faded text-center py-5">
+        <div class="container">
+            <p class="m-0 small">Copyright &copy; Your Website 2023</p>
+        </div>
+    </footer>
+</body>
+
+</html>

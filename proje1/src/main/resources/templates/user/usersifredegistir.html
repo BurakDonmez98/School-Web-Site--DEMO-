@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Kullanıcı Düzenle</title>
+    <link rel="icon" type="image/x-icon" href="/static/assets/favicon.ico" />
+    <!-- Google yazı tipleri-->
+    <link href="https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i" rel="stylesheet" />
+    <!-- Temel tema CSS (Bootstrap dahil)-->
+    <link href="/css/styles.css" rel="stylesheet" />
+  <script type="text/javascript">
+    function checkPasswordMatch() {
+        var password = document.getElementById("newPassword").value;
+        var confirmPassword = document.getElementById("confirmNewPassword").value;
+        var submitBtn = document.getElementById("submitBtn");
+        var message = document.getElementById("message");
+
+        if (password === confirmPassword && password !== "" && confirmPassword !== "") {
+            submitBtn.disabled = false;
+            message.style.color = "green";
+            message.innerHTML = "Şifreler eşleşiyor.";
+        } else {
+            submitBtn.disabled = true;
+            message.style.color = "red";
+            message.innerHTML = "Şifreler uyuşmuyor veya boş bırakılamaz.";
+        }
+    }
+</script>
+</head>
+<body>
+    <header>
+        <h1 class="site-heading text-center text-faded d-none d-lg-block">
+            <span class="site-heading-upper text-primary mb-3">Öğrenci Sistemi</span>
+            <span class="site-heading-lower">Öğrenci Denetim Sistemi</span>
+        </h1>
+    </header>
+    <section class="page-section cta">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-9 mx-auto">
+                    <div class="cta-inner bg-faded text-center rounded">
+                     <h2>Şifre Değiştirme Formu</h2>
+        <form th:action="@{/user/usersifredegistir}" method="post">
+            <div>
+                <label for="password">Mevcut Şifre:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div>
+                <label for="newPassword">Yeni Şifre:</label>
+                <input type="password" id="newPassword" name="newPassword" onkeyup="checkPasswordMatch()" required>
+            </div>
+            <div>
+                <label for="confirmNewPassword">Yeni Şifre (Tekrar):</label>
+                <input type="password" id="confirmNewPassword" name="confirmNewPassword" onkeyup="checkPasswordMatch()" required>
+            </div>
+            <div th:if="${error}" style="color: red">
+                <p th:text="${error}"></p>
+            </div>
+             <div id="message"></div>
+                            <div th:if="${error}" style="color: red">
+                                <p th:text="${error}"></p>
+                            </div>
+            
+            <br>
+            <button type="submit" class="btn btn-primary" id="submitBtn" disabled>Kaydet</button>
+            <br>
+           <span style="color: red;">NOT : Kaydet butonu gerekli koşulları sağlamadığı sürece aktif olamaz! </span><br>
+            <span style="color: red;">Koşul 1 : Yeni Şifre ve Yeni Şifre(Tekrar) boş olamaz!!</span><br>
+            <span style="color: red;">Koşul 1 : Yeni Şifre ve Yeni Şifre(Tekrar) birbirinden farklı olamaz!!</span>
+        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer class="footer text-faded text-center py-5">
+        <div class="container">
+            <p class="m-0 small">Copyright &copy; Your Website 2023</p>
+        </div>
+    </footer>
+</body>
+</html>

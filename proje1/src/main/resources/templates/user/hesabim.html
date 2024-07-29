@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Burak Dönmez Okul Sistemi - Hesabım</title>
+    <link rel="icon" type="image/x-icon" href="/static/assets/favicon.ico" />
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i" rel="stylesheet" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="/css/styles.css" rel="stylesheet" />
+    <script type="text/javascript" th:src="@{/js/scripts.js}"></script>
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+       <style>
+    #searchResults {
+        color: white; /* veya istediğiniz herhangi bir renk değeri */
+    }
+</style>
+</head>
+<body>
+
+<header>
+    <h1 class="site-heading text-center text-faded d-none d-lg-block">
+        <span class="site-heading-upper text-primary mb-3">Öğrenci Sistemi</span>
+        <span class="site-heading-lower">Öğrenci Denetim Sistemi</span>
+        
+        
+    </h1>
+</header>
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-dark py-lg-4" id="mainNav">
+    <div class="container">
+        <a class="navbar-brand text-uppercase fw-bold d-lg-none" href="index.html">Start Bootstrap</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mx-auto">
+           
+                <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="/user" th:href="@{/user/hesabim}"  th:text= "#{user.message}">Hesabım</a></li>
+                <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="/about" th:href="@{/about}" th:text= "#{about.message}">Hakkımızda</a></li>
+                <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="/ogretmen" th:href="@{/ogretmen/ogretmenlistesi}" th:text= "#{teacherlist.message}">Öğretmen Listesi</a></li>       
+                <li class="nav-item px-lg-4" sec:authorize="isAuthenticated()">
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit" class="nav-link text-uppercase btn btn-link" th:text= "#{exit.message}">Çıkış Yap</button>
+                    </form>
+                   <li class="nav-item px-lg-4">
+                    <form id="languageForm" method="get" th:action="@{/changeLanguage}">
+                        <label for="languageSelect" class="nav-link text-uppercase">Dil Seçin</label>
+                        <select id="languageSelect" name="lang" onchange="this.form.submit()" class="form-select">
+                            <option value="tr" th:selected="${#locale.language == 'tr'}">Türkçe</option>
+                            <option value="en" th:selected="${#locale.language == 'en'}">English</option>
+                            <option value="de" th:selected="${#locale.language == 'de'}">Deutsch</option>
+                        </select>
+                    </form>
+                </li>
+        
+        <form id="searchForm" action="/search" method="get">
+    <input type="text" name="query" id="query" placeholder="Arama...">
+    <button type="submit">Ara</button>
+</form>
+
+<div id="searchResults">
+    <!-- Burada arama sonuçları dinamik olarak gösterilecek -->
+      
+</div>
+        
+       
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<section class="page-section cta">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-9 mx-auto">
+              
+<div class="cta-inner bg-faded text-center rounded">
+    <h2 class="section-heading mb-4">
+        <span class="section-heading-upper" th:text="#{welcome.message}">Merhabalar, hoş geldiniz</span>
+        <br>
+       <span class="section-heading-upper" th:text="${#authentication.principal.name + ' ' + #authentication.principal.lName}"></span>
+        
+    </h2>
+    <h2 class="section-heading mb-4">
+        <span class="section-heading-upper" th:text= "#{activerole.message}">Güncel Yetkiniz</span>
+       
+    <span  class="section-heading-upper" th:each="authority : ${#authentication.principal.authorities}" th:text="${authority.authority}"></span>
+
+            
+   
+    </h2>
+    <h2 class="section-heading mb-4">
+        <br>
+        <span class="section-heading-upper" th:text= "#{userrotate.message}">Aşağıdan istediğiniz hesap sekmelesine gidebilirsiniz</span>
+    </h2>
+</div>
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<section class="page-section cta">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-9 mx-auto">
+                <div class="cta-inner bg-faded text-center rounded">
+                    <h2 class="section-heading mb-4"  th:text= "#{buttons.message}">
+                        Butonlar
+                    </h2>
+                    <div class="mb-4">
+                        <a href="/user/userayarlari" class="btn btn-primary btn-lg mr-3" th:text= "#{usersettings.message}">Hesap Ayarları</a>
+                        <a href="/user/userlistesi" class="btn btn-primary btn-lg mr-3" th:text= "#{userlist.message}">Hesap Listesi</a>                       
+                    </div>
+                    <div>                      
+                        <a sec:authorize="hasAuthority('ROLE_ADMIN')" href="/ogrenci/ogrenciekle" class="btn btn-primary btn-lg mr-3" th:text= "#{studentadd.message}">Öğrenci Ekle</a>
+                        <a href="/ogrenci/ogrencilistesi" class="btn btn-primary btn-lg" th:text= "#{studentlist.message}">Öğrenci Listesi</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<footer class="footer text-faded text-center py-5">
+    <div class="container"><p class="m-0 small">Copyright &copy; Your Website 2023</p></div>
+</footer>
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+ <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var form = document.getElementById("languageForm");
+            form.action = window.location.pathname;
+        });
+    </script>
+    <script>
+    // Form submit olayını dinleyerek AJAX ile arama sonuçlarını al
+    $('#searchForm').submit(function(event) {
+        // Formun normal submit işlemini engelle
+        event.preventDefault();
+        
+        // Formdan query parametresini al
+        var query = $('#query').val();
+        
+        // AJAX isteği gönder
+        $.ajax({
+            type: 'GET',
+            url: '/search',
+            data: { query: query },
+            success: function(response) {
+                // Başarılı şekilde sonuç alındığında, sonuçları göster
+                $('#searchResults').html(response);
+            },
+            error: function(xhr, status, error) {
+                // Hata durumunda uyarı gösterilebilir
+                console.error('Arama sırasında bir hata oluştu: ' + error);
+            }
+        });
+    });
+</script>
+    
+</body>
+</html>

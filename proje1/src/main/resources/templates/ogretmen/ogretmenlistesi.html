@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="description" content="" />
+<meta name="author" content="" />
+<title>Öğretmen Listesi</title>
+<link rel="icon" type="image/x-icon" href="/static/assets/favicon.ico" />
+<!-- Google fonts-->
+<link
+	href="https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i"
+	rel="stylesheet" />
+<link
+	href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i"
+	rel="stylesheet" />
+<!-- Core theme CSS (includes Bootstrap)-->
+<link href="/css/styles.css" rel="stylesheet" />
+<script type="text/javascript" th:src="@{/js/scripts.js}"></script>
+</head>
+<body>
+	<header>
+		<h1 class="site-heading text-center text-faded d-none d-lg-block">
+			<span class="site-heading-upper text-primary mb-3">Öğrenci
+				Sistemi</span> <span class="site-heading-lower">Öğrenci Denetim
+				Sistemi</span>
+		</h1>
+	</header>
+	<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-dark py-lg-4" id="mainNav">
+    <div class="container">
+        <a class="navbar-brand text-uppercase fw-bold d-lg-none" href="index.html">Start Bootstrap</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="/user" th:href="@{/user/hesabim}"  th:text= "#{user.message}">Hesabım</a></li>
+                <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="/about" th:href="@{/about}" th:text= "#{about.message}">Hakkımızda</a></li>
+                <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="/ogretmen" th:href="@{/ogretmen/ogretmenlistesi}" th:text= "#{teacherlist.message}">Öğretmen Listesi</a></li>       
+                <li class="nav-item px-lg-4" sec:authorize="isAuthenticated()">
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit" class="nav-link text-uppercase btn btn-link" th:text= "#{exit.message}">Çıkış Yap</button>
+                    </form>
+                  <li class="nav-item px-lg-4">
+                    <form id="languageForm" method="get" th:action="@{/changeLanguage}">
+                        <label for="languageSelect" class="nav-link text-uppercase">Dil Seçin</label>
+                        <select id="languageSelect" name="lang" onchange="this.form.submit()" class="form-select">
+                            <option value="tr" th:selected="${#locale.language == 'tr'}">Türkçe</option>
+                            <option value="en" th:selected="${#locale.language == 'en'}">English</option>
+                            <option value="de" th:selected="${#locale.language == 'de'}">Deutsch</option>
+                        </select>
+                    </form>
+                </li>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<section class="page-section cta">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-9 mx-auto">
+                <div class="cta-inner bg-faded text-center rounded">
+                    <h1>Öğretmen Listesi</h1>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Ad</th>
+                                <th>Soyad</th>
+                                <th>Branş</th>
+                                <th>Öğretmen Notu</th>
+                                <th>Aktiflik Durumu</th>
+                                <th>İşlemler</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Öğretmen bilgileri burada döngü ile listelenecek -->
+                            <tr th:each="ogretmen : ${ogretmenPage.content}">
+                                <td th:if="${ogretmen.enabled}" th:text="${ogretmen.ad}"></td>
+                                <td th:if="${ogretmen.enabled}" th:text="${ogretmen.soyad}"></td>
+                                <td th:if="${ogretmen.enabled}" th:text="${ogretmen.brans}"></td>
+                                <td th:if="${ogretmen.enabled}" th:text="${ogretmen.ogretmenNotu}"></td>
+                                <td th:if="${ogretmen.enabled}" th:text="${ogretmen.enabled ? 'Evet' : 'Hayır'}"></td>
+                                <td th:if="${ogretmen.enabled}">
+                               <div class="btn-group" sec:authorize="hasRole('ROLE_ADMIN')">
+    <a class="btn btn-primary btn-sm" th:href="@{/ogretmen/ogretmenduzenle/{id}(id=${ogretmen.id})}" th:text= "#{edit.message}">Düzenle</a>
+     <span>&nbsp;</span>
+      <span>&nbsp;</span>
+    <a class="btn btn-danger btn-sm" onclick="return confirmDelete()" th:href="@{/ogretmen/ogretmensil/{id}(id=${ogretmen.id})}" th:text= "#{delete.message}">Sil</a>
+</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                   <a class="btn btn-success btn-sm" th:href="@{/ogretmen/ogretmenekle}" sec:authorize="hasRole('ROLE_ADMIN')">Öğretmen Ekle</a>
+                    
+                     <a class="btn btn-info btn-sm" th:href="@{/ogretmen/pasifogretmenlistesi}">Pasif Öğretmen Listesi</a>
+                    
+                    <div class="pagination-container">
+    <ul class="pagination justify-content-center">
+    <li class="page-item" th:classappend="${ogretmenPage.first} ? 'disabled'">
+        <a class="page-link" th:href="@{/ogretmen/ogretmenlistesi(sayfaSayisi=${ogretmenPage.number - 1}, kayitSayisi=${ogretmenPage.size}, sortBy=${sortBy}, direction=${direction})}">Önceki</a>
+    </li>
+    <li class="page-item" th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${pageNum == currentPage} ? 'active'">
+        <a class="page-link" th:text="${pageNum + 1}" th:href="@{/ogretmen/ogretmenlistesi(sayfaSayisi=${pageNum}, kayitSayisi=${ogretmenPage.size}, sortBy=${sortBy}, direction=${direction})}"></a>
+    </li>
+    <li class="page-item" th:classappend="${ogretmenPage.last} ? 'disabled'">
+        <a class="page-link" th:href="@{/ogretmen/ogretmenlistesi(sayfaSayisi=${ogretmenPage.number + 1}, kayitSayisi=${ogretmenPage.size}, sortBy=${sortBy}, direction=${direction})}">Sonraki</a>
+    </li>
+</ul>
+</div>
+                    
+            </div>
+        </div>
+    </div>
+</section>
+
+	<footer class="footer text-faded text-center py-5">
+		<div class="container">
+			<p class="m-0 small">Copyright &copy; Your Website 2023</p>
+		</div>
+	</footer>
+	<!-- Bootstrap core JS-->
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+	<!-- Core theme JS-->
+	<script src="js/scripts.js"></script>
+	<script>
+		function confirmDelete() {
+			return confirm("Bu öğretmeni silmek istediğinizden emin misiniz?");
+		}
+	</script>
+	 <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var form = document.getElementById("languageForm");
+            form.action = window.location.pathname;
+        });
+    </script>
+</body>
+</html>
